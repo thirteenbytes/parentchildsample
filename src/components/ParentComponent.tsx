@@ -1,13 +1,33 @@
 import { useState } from "react";
 import { initialStudents } from "../data/initialData";
-import { Student } from "../data/types";
+import { Student, StudentType } from "../data/types";
 import ActiveStudents from "./ActiveStudents";
 import NonActiveStudents from "./NonActiveStudents";
+import { TabPanel } from "@chakra-ui/react";
 
 export default function ParentComponent() {
-    const [students, setStudents] = useState<Student[]>(initialStudents);
+    const [selectedTab, setSelectedTab] = useState<number>(0);
+    //const [students, setStudents] = useState<Student[]>(initialStudents);
 
-    const toggleStudentStatus = (id: number) => {
+    const handleTabsChange = (index: number) => {
+        setSelectedTab(index);
+    };
+
+    const studentTypeKeys = Object.keys(StudentType).filter(key => isNaN(Number(key)));
+
+    const addTabPanels = () => {
+        const tabs = [];
+        studentTypeKeys.forEach(enumKey => {
+            tabs.push(
+                <TabPanel key = {enumKey}>
+                    
+                </TabPanel>
+            );
+        });
+
+    };
+
+    /* const toggleStudentStatus = (id: number) => {
         setStudents((prevStudents) =>
             prevStudents.map((student) =>
                 student.id === id ? { ...student, active: !student.active } : student
@@ -16,14 +36,8 @@ export default function ParentComponent() {
     };
 
     const activeStudentList = students.filter((student) => student.active);
-    const nonActiveStudentList = students.filter((student) => !student.active);
+    const nonActiveStudentList = students.filter((student) => !student.active); */
 
     return (
-        <div>
-            <h1>Active Students</h1>
-            <ActiveStudents students={activeStudentList} toggleStatus={toggleStudentStatus} />
-            <h1>Non-Active Students</h1>
-            <NonActiveStudents students={nonActiveStudentList} toggleStatus={toggleStudentStatus} />
-        </div>
     );
 }
