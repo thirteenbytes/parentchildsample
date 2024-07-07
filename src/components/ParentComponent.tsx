@@ -3,7 +3,8 @@ import { initialStudents } from "../data/initialData";
 import { Student, StudentType } from "../data/types";
 import ActiveStudents from "./ActiveStudents";
 import NonActiveStudents from "./NonActiveStudents";
-import { TabPanel } from "@chakra-ui/react";
+import { Box, HStack, Tab, TabList, TabPanel, Tabs } from "@chakra-ui/react";
+import { JSX } from "react/jsx-runtime";
 
 export default function ParentComponent() {
     const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -16,28 +17,44 @@ export default function ParentComponent() {
     const studentTypeKeys = Object.keys(StudentType).filter(key => isNaN(Number(key)));
 
     const addTabPanels = () => {
-        const tabs = [];
+        const tabs: JSX.Element[] = [];
         studentTypeKeys.forEach(enumKey => {
             tabs.push(
-                <TabPanel key = {enumKey}>
-                    
+                <TabPanel key={enumKey}>
+                    <HStack w="100%" spacing="20px">
+                        <Box flex="1" w="49%">
+                            <ActiveStudents studentType={StudentType[enumKey as keyof typeof StudentType]} />
+                        </Box>
+                        <Box flex="1" w="49%">
+                            <NonActiveStudents studentType={StudentType[enumKey as keyof typeof StudentType]} />
+                        </Box>
+                    </HStack>
                 </TabPanel>
             );
         });
-
+        return tabs
     };
 
-    /* const toggleStudentStatus = (id: number) => {
-        setStudents((prevStudents) =>
-            prevStudents.map((student) =>
-                student.id === id ? { ...student, active: !student.active } : student
-            )
-        );
-    };
-
-    const activeStudentList = students.filter((student) => student.active);
-    const nonActiveStudentList = students.filter((student) => !student.active); */
+    const addTabs = () => {
+        const tabs = [];
+        studentTypeKeys.forEach(enumKey => {
+            tabs.push(<Tab key= {enumKey}>{StudentType[enumKey as keyof typeof StudentType]}</Tab>);
+        });
+        return tabs;
+    }
 
     return (
+        <Tabs
+        isLazy
+        onChange={(index) => handleTabsChange(index)}
+        index={selectedTab}
+        size="lg"
+        isFitted
+        style={{ borderRadius: 0 }}
+        variant="unstyled">
+        <TabList
+            {addTabs}
+        ></TabList>
+        </Tabs>
     );
 }
