@@ -7,12 +7,15 @@ interface IProps {
     studentType: StudentType;
 }
 
-export default function NonActiveStudents({studentType }: IProps) {
+export default function NonActiveStudents({ studentType }: IProps) {
     const [students, setStudents] = useState<Student[]>(initialStudents);
-    
+
     useEffect(() => {
-        setStudents(students.filter(student => student.studentType === studentType));
-    });
+        const loadStudents = () => {
+            setStudents(students.filter(student => student.studentType === studentType && !student.active));
+        };
+        loadStudents();
+    }, [studentType]);
 
     return (
         <div>

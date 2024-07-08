@@ -1,3 +1,4 @@
+import { HStack, Text, Button } from "@chakra-ui/react";
 import { Student } from "../data/types";
 
 interface IProps {
@@ -6,9 +7,9 @@ interface IProps {
 
 export default function ActiveStudent({ student }: IProps) {
     return (
-        <div>
-            <span>{student.name}</span>
-            <button>Set as Non-Active</button>
-        </div>
+        <HStack>
+            <Text>{student.name}</Text>
+            <Button>Set as Active</Button>
+        </HStack>            
     )
 }
